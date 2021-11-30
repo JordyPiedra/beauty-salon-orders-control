@@ -1,4 +1,4 @@
-package com.jordypiedra.demo.entity;
+package com.orderscontrol.demo.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.jordypiedra.demo.exceptions.UserNotFoundException;
-import com.jordypiedra.demo.repository.UserRepository;
+import com.orderscontrol.demo.exceptions.ItemNotFoundException;
+import com.orderscontrol.demo.repository.UserRepository;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,10 +33,10 @@ public class UserJPAService {
 		return user;
 	}
 
-	public User findOne(Integer id) throws UserNotFoundException {
+	public User findOne(Integer id) throws ItemNotFoundException {
 		Optional<User> user = repository.findById(id);
 		if (!user.isPresent())
-			throw new UserNotFoundException("User :" + id + " not found");
+			throw new ItemNotFoundException("User :" + id + " not found");
 
 		return user.get();
 	}
