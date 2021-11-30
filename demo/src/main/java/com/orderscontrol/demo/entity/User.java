@@ -1,4 +1,4 @@
-package com.jordypiedra.demo.entity;
+package com.orderscontrol.demo.entity;
 
 import java.util.Date;
 
@@ -16,13 +16,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Entity
-public class User {
+public class User extends BaseEntity{
 
-	@Id
-	@GeneratedValue
-	private Integer id;
-	
-	@Size(min=2)
+ 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7926444944978759406L;
+	@Size(min=50)
 	private String name;
 	@Past
 	private Date birthDate;

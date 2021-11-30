@@ -1,35 +1,12 @@
-package com.jordypiedra.demo.controller;
+package com.orderscontrol.demo.controller;
 
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.jordypiedra.demo.entity.User;
-import com.jordypiedra.demo.entity.UserDaoService;
-import com.jordypiedra.demo.exceptions.UserNotFoundException;
-
-import javassist.NotFoundException;
 
 @RestController
 public class UserController {
 
 	// RequestMapping(method = RequestMethod.GET, path = "/hello-world")
-
+/*
 	@Autowired
 	UserDaoService service;
 
@@ -64,4 +41,5 @@ public class UserController {
 		if (user == null )
 			throw new UserNotFoundException("id-"+id);
 	}
+	*/
 }

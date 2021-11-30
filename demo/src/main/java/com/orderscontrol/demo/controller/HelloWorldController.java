@@ -1,4 +1,4 @@
-package com.jordypiedra.demo.controller;
+package com.orderscontrol.demo.controller;
 
 import java.util.Locale;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jordypiedra.demo.entity.HelloWorldBean;
+import com.orderscontrol.demo.entity.HelloWorldBean;
 
 @RestController
 public class HelloWorldController {

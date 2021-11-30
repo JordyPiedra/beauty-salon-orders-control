@@ -1,4 +1,4 @@
-package com.jordypiedra.demo.entity;
+package com.orderscontrol.demo.entity;
 
 public class HelloWorldBean {
 

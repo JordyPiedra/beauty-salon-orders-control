@@ -1,4 +1,7 @@
-package com.jordypiedra.demo.controller;
+package com.orderscontrol.demo.controller;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
 import java.util.List;
@@ -8,10 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jordypiedra.demo.entity.User;
-import com.jordypiedra.demo.entity.UserDaoService;
-import com.jordypiedra.demo.entity.UserJPAService;
-import com.jordypiedra.demo.exceptions.UserNotFoundException;
-
-import javassist.NotFoundException;
+import com.orderscontrol.demo.entity.User;
+import com.orderscontrol.demo.entity.UserJPAService;
+import com.orderscontrol.demo.exceptions.ItemNotFoundException;
 
 @RestController
 public class RUserController {
@@ -40,10 +37,10 @@ public class RUserController {
 	}
 
 	@GetMapping("/jpa/users/{id}")
-	public EntityModel<User> findUser(@PathVariable Integer id) throws UserNotFoundException {
+	public EntityModel<User> findUser(@PathVariable Integer id) throws ItemNotFoundException {
 		User user =  service.findOne(id);
 		if (user == null )
-			throw new UserNotFoundException("id-"+id);
+			throw new ItemNotFoundException("id-"+id);
 		
 		EntityModel<User> model = EntityModel.of(user);
 		WebMvcLinkBuilder linkToUsers = linkTo(methodOn(this.getClass()).findAll());
