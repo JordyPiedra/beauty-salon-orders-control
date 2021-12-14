@@ -14,11 +14,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "customer_order")
 
 public class Order extends BaseEntity {
@@ -31,6 +32,12 @@ public class Order extends BaseEntity {
 	/** Client name */
 	@Size(max=150)
 	private String clientName;
+	
+	@Size(max=150)
+	private String clientPhone;
+	
+	@Size(max=150)
+	private String clientEmail;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderDetail> orderDetails;

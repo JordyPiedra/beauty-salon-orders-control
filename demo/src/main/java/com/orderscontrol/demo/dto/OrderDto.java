@@ -21,6 +21,6 @@ public class OrderDto extends BaseDto {
 	
 	private String clientEmail;
 	
-	private List<OrderDetail> orderDetails;
+	private List<OrderDetailDto> orderDetails;
 	
 }
