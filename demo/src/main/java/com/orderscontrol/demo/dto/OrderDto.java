@@ -14,7 +14,8 @@ import lombok.Setter;
 public class OrderDto extends BaseDto {
 
 	
-
+	private String username;
+	
 	private String clientName;
 	
 	private String clientPhone;

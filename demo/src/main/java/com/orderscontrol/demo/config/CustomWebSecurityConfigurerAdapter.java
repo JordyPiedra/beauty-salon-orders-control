@@ -18,7 +18,7 @@ public class CustomWebSecurityConfigurerAdapter
 		http.csrf().disable()
 			.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.authorizeRequests()
-			.antMatchers(HttpMethod.POST, "/login").permitAll()
+			.antMatchers("/**").permitAll()
 			.anyRequest().authenticated();
 	}
 }

@@ -60,4 +60,13 @@ public class Order extends BaseEntity {
 	}
 	
 	
+	public OrderDetail getDetailById(long id) {
+		for (OrderDetail orderDetail : orderDetails) {
+			if (orderDetail.getId().equals(id)) {
+				return orderDetail;
+			}
+		}
+		return null;
+	}
+	
 }

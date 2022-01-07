@@ -23,6 +23,8 @@ public class ItemDto extends BaseDto{
 	
 	private String detail;
 	
+	private String key;
+	
 	private boolean compound;
 	
 	private double[] price;

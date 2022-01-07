@@ -13,8 +13,10 @@ public class OrderDetailDto extends BaseDto {
 
 	private Long itemId;
 	
-	private ItemDto item;
-
+	private String description;
+	
+	private String key;
+	
 	private double price;
 
 	private String[] participants;

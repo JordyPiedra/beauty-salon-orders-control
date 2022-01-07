@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.orderscontrol.demo.dto.OrderDetailDto;
 import com.orderscontrol.demo.dto.OrderDto;
 import com.orderscontrol.demo.entity.Order;
+import com.orderscontrol.demo.entity.OrderDetail;
+import com.orderscontrol.demo.exceptions.ItemNotFoundException;
 import com.orderscontrol.demo.service.OrderService;
 import com.orderscontrol.demo.utils.ObjectMapperUtils;
 
 @RestController
 @RequestMapping(path = "/orders")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderController extends BaseController<OrderService, OrderDto> {
 
 	@Autowired
@@ -36,6 +41,28 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 		super(orderService);
 	}
 	
+	
+	@Override
+	public EntityModel<OrderDto> findOne(@PathVariable Long id) throws Exception {
+		Order order = service.selectOne(id);
+		
+		OrderDto entityDto = ObjectMapperUtils.map(service.selectOne(id), OrderDto.class);
+		if (entityDto == null)
+			throw new ItemNotFoundException("id-" + id);
+		
+		for (OrderDetailDto detail : entityDto.getOrderDetails()) {
+			OrderDetail detailValue=order.getDetailById(detail.getId());
+			if(detailValue!=null) {
+				detail.setKey(detailValue.getKeyData());
+				detail.setItemId(detailValue.getItem().getId());
+			}
+				
+		}
+		EntityModel<OrderDto> model = EntityModel.of(entityDto);
+		WebMvcLinkBuilder linkToUsers = linkTo(methodOn(this.getClass()).findAll());
+		model.add(linkToUsers.withRel("all-items"));
+		return model;
+	}
 	
 	@PostMapping()
 	@Override

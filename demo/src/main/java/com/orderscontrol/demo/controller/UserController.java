@@ -1,28 +1,37 @@
 package com.orderscontrol.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orderscontrol.demo.dto.UserDto;
 import com.orderscontrol.demo.entity.User;
 import com.orderscontrol.demo.service.UserService;
+import com.orderscontrol.demo.utils.ObjectMapperUtils;
 import com.orderscontrol.demo.utils.Security;
 
 @RestController
-public class UserController {
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping(path = "/users")
+public class UserController extends BaseController<UserService, UserDto> {
+
+	public UserController(UserService service) {
+		super(service);
+	}
 
 	@Autowired
-	UserService service;
+	private UserService service;
 
 	@PostMapping("/login")
-	public User login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
+	public UserDto login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
 
 		User user = service.login(username, pwd);
-		String token = Security.getJWTToken(username);
+		String token = Security.getJWTToken(user);
 		user.setToken(token);
-		return user;
-
+		return ObjectMapperUtils.map(user, UserDto.class);
 	}
 
 	@PostMapping("/register")
@@ -32,6 +41,5 @@ public class UserController {
 		user.setPwd(pwd);
 		return service.create(user);
 	}
-
 
 }

@@ -7,6 +7,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.orderscontrol.demo.dto.OrderDetailDto;
@@ -49,7 +52,9 @@ public class OrderService extends BaseServiceImp<Order> {
 				detail.setItem(item.get());
 				detail.setPrice(orderDetailDto.getPrice());
 				detail.setParticipants(orderDetailDto.getParticipants());
-				detail.setCreatedBy(null);
+				detail.setCreatedBy(Security.getCurrentUser().getUsername());
+				detail.setKeyData(orderDetailDto.getKey());	
+				detail.setStatus("ACTIVE");
 				entitySaved.addDetail(detail);
 			}
 		}

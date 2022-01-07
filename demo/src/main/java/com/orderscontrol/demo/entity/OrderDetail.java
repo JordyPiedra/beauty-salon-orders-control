@@ -24,6 +24,10 @@ public class OrderDetail extends BaseEntity {
 	@OneToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_id")
 	private Item item;
+	
+	private String keyData;
+
+	private String description;
 
 	private double price;
 

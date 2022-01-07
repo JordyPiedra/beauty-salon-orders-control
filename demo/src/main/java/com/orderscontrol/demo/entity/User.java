@@ -19,6 +19,9 @@ public class User extends BaseEntity {
 	private static final long serialVersionUID = 7926444944978759406L;
 
 	private String username;
+	
+	private String role;
+	
 	private String pwd;
 	@Transient
 	private String token;
