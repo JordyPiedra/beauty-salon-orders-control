@@ -22,11 +22,20 @@ public class Item extends BaseEntity{
 	private static final long serialVersionUID = -5184298195195701711L;
 
 	@Size(max=100)
+	private String code;
+	
+	@Size(max=100)
 	private String detail;
 	
 	private boolean compound;
 	
 	private double[] price;
+	
+	private double commissionPrice1;
+	
+	private double commissionPrice2;
+
+
 	
 	/** Document */
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)

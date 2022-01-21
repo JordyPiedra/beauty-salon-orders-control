@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orderscontrol.demo.dto.UserDto;
+import com.orderscontrol.demo.dto.UserLoginDto;
 import com.orderscontrol.demo.entity.User;
 import com.orderscontrol.demo.service.UserService;
 import com.orderscontrol.demo.utils.ObjectMapperUtils;
@@ -26,12 +27,11 @@ public class UserController extends BaseController<UserService, UserDto> {
 	private UserService service;
 
 	@PostMapping("/login")
-	public UserDto login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
-
+	public UserLoginDto login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
 		User user = service.login(username, pwd);
 		String token = Security.getJWTToken(user);
 		user.setToken(token);
-		return ObjectMapperUtils.map(user, UserDto.class);
+		return ObjectMapperUtils.map(user, UserLoginDto.class);
 	}
 
 	@PostMapping("/register")

@@ -22,6 +22,7 @@ import com.orderscontrol.demo.repository.OrderRepository;
 import com.orderscontrol.demo.utils.ObjectMapperUtils;
 import com.orderscontrol.demo.utils.Security;
 
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,7 +41,8 @@ public class OrderService extends BaseServiceImp<Order> {
 	public OrderService(OrderRepository repository) {
 		super(repository);
 	}
-
+	
+ 
 	public Order create(OrderDto orderDto) {
 		Order entitySaved = ObjectMapperUtils.map(orderDto, Order.class);
 		entitySaved.setOrderDetails(null);

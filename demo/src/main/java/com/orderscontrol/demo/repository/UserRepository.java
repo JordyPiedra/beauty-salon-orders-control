@@ -11,6 +11,6 @@ import com.orderscontrol.demo.entity.User;
 @Repository
 public interface UserRepository extends BaseRepository<User> {
 
-	@Query(value = "select * from user where username = :username and pwd = :password", nativeQuery = true)
-	Optional<User> findLogin(@Param("username") String username,@Param("password") String password);
+	@Query(value = "select * from user where username = :username ", nativeQuery = true)
+	Optional<User> findByUsername(@Param("username") String username);
 }

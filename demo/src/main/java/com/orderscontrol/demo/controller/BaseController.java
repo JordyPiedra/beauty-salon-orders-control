@@ -82,9 +82,9 @@ public class BaseController<T extends BaseServiceImp, U extends BaseDto> {
 	public ResponseEntity<Object> update(@PathVariable Long id,@Valid @RequestBody U entityDto) {
 		Object entitySaved = service.update(id,(BaseEntity) ObjectMapperUtils.map(entityDto, service.entityClass));
 		U dto = ObjectMapperUtils.map(entitySaved, dtoClass);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
-				.toUri();
-		return ResponseEntity.created(location).build();
+		//URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
+			//	.toUri();
+		return ResponseEntity.ok(dto);
 	}
 
 }

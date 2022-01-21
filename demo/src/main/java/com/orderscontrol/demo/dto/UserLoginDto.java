@@ -7,14 +7,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDto extends BaseDto {
+public class UserLoginDto extends BaseDto {
 
 	/**
 	 * 
 	 */
 
 	private String username;
- 	private String role;
-	private String pwd;
-
+	private String token;
+	private String role;
+ 
 }

@@ -7,12 +7,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,6 +38,9 @@ public class Order extends BaseEntity {
 	
 	@Size(max=150)
 	private String clientEmail;
+	
+	@Transient
+	private double total;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderDetail> orderDetails;
@@ -69,4 +72,13 @@ public class Order extends BaseEntity {
 		return null;
 	}
 	
+	public double getTotal() {
+		double total = 0d;
+		for (OrderDetail orderDetail : orderDetails) {
+			total += orderDetail.getPrice();
+		}
+		return total;
+	}
+	
+ 
 }
