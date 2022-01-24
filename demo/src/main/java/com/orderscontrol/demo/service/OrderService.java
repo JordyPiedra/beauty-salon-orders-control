@@ -1,15 +1,11 @@
 package com.orderscontrol.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.orderscontrol.demo.dto.OrderDetailDto;
@@ -17,18 +13,15 @@ import com.orderscontrol.demo.dto.OrderDto;
 import com.orderscontrol.demo.entity.Item;
 import com.orderscontrol.demo.entity.Order;
 import com.orderscontrol.demo.entity.OrderDetail;
+import com.orderscontrol.demo.repository.BaseRepository;
 import com.orderscontrol.demo.repository.ItemRepository;
 import com.orderscontrol.demo.repository.OrderRepository;
 import com.orderscontrol.demo.utils.ObjectMapperUtils;
 import com.orderscontrol.demo.utils.Security;
 
-import javassist.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author jmpiedra
  */
-@Slf4j
 @Service
 public class OrderService extends BaseServiceImp<Order> {
 
@@ -41,8 +34,7 @@ public class OrderService extends BaseServiceImp<Order> {
 	public OrderService(OrderRepository repository) {
 		super(repository);
 	}
-	
- 
+
 	public Order create(OrderDto orderDto) {
 		Order entitySaved = ObjectMapperUtils.map(orderDto, Order.class);
 		entitySaved.setOrderDetails(null);
@@ -55,8 +47,9 @@ public class OrderService extends BaseServiceImp<Order> {
 				detail.setPrice(orderDetailDto.getPrice());
 				detail.setParticipants(orderDetailDto.getParticipants());
 				detail.setCreatedBy(Security.getCurrentUser().getUsername());
-				detail.setKeyData(orderDetailDto.getKey());	
+				detail.setKeyData(orderDetailDto.getKey());
 				detail.setStatus("ACTIVE");
+				detail.setDescription(orderDetailDto.getDescription());
 				entitySaved.addDetail(detail);
 			}
 		}
@@ -78,6 +71,7 @@ public class OrderService extends BaseServiceImp<Order> {
 				detail.setPrice(orderDetailDto.getPrice());
 				detail.setParticipants(orderDetailDto.getParticipants());
 				detail.setCreatedBy(Security.getUsernameFromToken());
+				detail.setDescription(orderDetailDto.getDescription());
 				entitySaved.addDetail(detail);
 			}
 		}
@@ -88,28 +82,30 @@ public class OrderService extends BaseServiceImp<Order> {
 	}
 
 	public Order sendToPay(Long id) {
-		return changeOrderStatus(id , "EN CAJA");
+		return changeOrderStatus(id, "EN CAJA");
 
 	}
 
 	public Order completeOrder(Long id) {
-		return changeOrderStatus(id , "COMPLETADO");
+		return changeOrderStatus(id, "COMPLETADO");
 	}
-	
+
 	public Order processOrder(Long id) {
-		return changeOrderStatus(id , "EN PROCESO");
+		return changeOrderStatus(id, "EN PROCESO");
 	}
-	
+
 	public Order cancelOrder(Long id) {
-		return changeOrderStatus(id , "ANULADO");
+		return changeOrderStatus(id, "ANULADO");
 	}
-	
-	
-	
-	public Order changeOrderStatus(Long id , String status) {
+
+	public Order changeOrderStatus(Long id, String status) {
 		Order existentEntity = repository.findById(id).get();
 		existentEntity.setStatus(status);
 		return repository.save(existentEntity);
+	}
+
+	public BaseRepository getBaseRepository() {
+		return repository;
 	}
 
 }

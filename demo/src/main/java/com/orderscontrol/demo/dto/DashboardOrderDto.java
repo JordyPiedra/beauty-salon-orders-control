@@ -15,22 +15,22 @@ public class DashboardOrderDto extends BaseDto {
 
 	private String subtitle;
 
-	private ListDescription list;
+	private List<ListDescription> list;
 
 	private int participants;
 
 	private double price;
 
-	private List<OrderDetailDto> orderDetails;
+	private List<OrderDetailDto> detail;
 
 	private int services;
 
 	@Getter
 	@Setter
 	@NoArgsConstructor
-	public class ListDescription {
+	public static class ListDescription {
 		private String description;
 		private String counter;
-		private String face;
+		private String icon;
 	}
 }
