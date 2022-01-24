@@ -3,13 +3,13 @@ package com.orderscontrol.demo.controller;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +22,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.orderscontrol.demo.dto.DashboardOrderDto;
+import com.orderscontrol.demo.dto.DashboardOrderDto.ListDescription;
 import com.orderscontrol.demo.dto.OrderDetailDto;
 import com.orderscontrol.demo.dto.OrderDto;
 import com.orderscontrol.demo.entity.Order;
 import com.orderscontrol.demo.entity.OrderDetail;
 import com.orderscontrol.demo.exceptions.ItemNotFoundException;
+import com.orderscontrol.demo.repository.OrderRepository;
 import com.orderscontrol.demo.service.OrderService;
 import com.orderscontrol.demo.utils.ObjectMapperUtils;
+import com.sipios.springsearch.anotation.SearchSpec;
 
 @RestController
 @RequestMapping(path = "/orders")
@@ -43,6 +45,16 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 
 	public OrderController(OrderService orderService) {
 		super(orderService);
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<?> search(@SearchSpec Specification<Order> specs) {
+
+		List<Order> orderList = ((OrderRepository) this.service.getBaseRepository())
+				.findAll(Specification.where(specs));
+		List<OrderDto> orderDtoList = ObjectMapperUtils.mapAll(orderList, OrderDto.class);
+		return ResponseEntity.ok(orderDtoList);
+
 	}
 
 	@GetMapping("/dashboard")
@@ -57,7 +69,27 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 			dto.setSubtitle(orderDto.getCreationDate().toString());
 			dto.setPrice(orderDto.getTotal());
 			dto.setServices(orderDto.getOrderDetails().size());
+
+			List<ListDescription> list = new ArrayList<ListDescription>();
+
+			ListDescription serviceList = new ListDescription();
+			serviceList.setDescription("Servicios contratados");
+			serviceList.setIcon("content_cut");
+			serviceList.setCounter(orderDto.getOrderDetails().size() + "");
+
+			ListDescription priceList = new ListDescription();
+			priceList.setDescription("Total");
+			priceList.setIcon("credit_card");
+			priceList.setCounter("$" + orderDto.getTotal());
+
+			list.add(serviceList);
+			list.add(priceList);
+			dto.setList(list);
+
+			dto.setDetail(orderDto.getOrderDetails());
+
 			dashboardOrderList.add(dto);
+
 		}
 		return dashboardOrderList;
 	}
@@ -89,9 +121,7 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 	public ResponseEntity<Object> create(@Valid @RequestBody OrderDto orderDto) {
 		Order entity = service.create(orderDto);
 		OrderDto dto = ObjectMapperUtils.map(entity, OrderDto.class);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
-				.toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.ok(dto);
 	}
 
 	@PutMapping("/{id}")
@@ -99,9 +129,7 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 	public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody OrderDto orderDto) {
 		Order entity = service.update(id, orderDto);
 		OrderDto dto = ObjectMapperUtils.map(entity, OrderDto.class);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
-				.toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.ok(dto);
 	}
 
 	@PatchMapping("/{id}/pay")
