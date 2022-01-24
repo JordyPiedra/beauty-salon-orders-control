@@ -1,32 +1,29 @@
 package com.orderscontrol.demo.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.persistence.Transient;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
- 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7926444944978759406L;
-	@Size(min=50)
-	private String name;
-	@Past
-	private Date birthDate;
- 
+
+	private String username;
 	
+	private String role;
+	
+	private String pwd;
+	@Transient
+	private String token;
+
 }

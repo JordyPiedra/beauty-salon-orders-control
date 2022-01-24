@@ -20,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemDto extends BaseDto{
 
+	private String code;
 	
 	private String detail;
 	
@@ -27,8 +28,13 @@ public class ItemDto extends BaseDto{
 	
 	private double[] price;
 	
+	private String categoryName;
+	
 	private Long categoryId;
 	
+	private double commissionPrice1;
+	
+	private double commissionPrice2;
  
 	
 }

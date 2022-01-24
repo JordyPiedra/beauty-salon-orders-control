@@ -18,5 +18,11 @@ public class ItemService extends BaseServiceImp<Item> {
 	public ItemService(ItemRepository repository) {
 		super(repository);
 	}
+	
+	@Override
+	public Item create(Item entity) {
+		// TODO Auto-generated method stub
+		return super.create(entity);
+	}
 
 }

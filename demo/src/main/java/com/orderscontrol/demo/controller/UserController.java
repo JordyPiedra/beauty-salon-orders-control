@@ -1,45 +1,45 @@
 package com.orderscontrol.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orderscontrol.demo.dto.UserDto;
+import com.orderscontrol.demo.dto.UserLoginDto;
+import com.orderscontrol.demo.entity.User;
+import com.orderscontrol.demo.service.UserService;
+import com.orderscontrol.demo.utils.ObjectMapperUtils;
+import com.orderscontrol.demo.utils.Security;
+
 @RestController
-public class UserController {
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping(path = "/users")
+public class UserController extends BaseController<UserService, UserDto> {
 
-	// RequestMapping(method = RequestMethod.GET, path = "/hello-world")
-/*
+	public UserController(UserService service) {
+		super(service);
+	}
+
 	@Autowired
-	UserDaoService service;
+	private UserService service;
 
-	@GetMapping("/users")
-	public List<User> findAll() {
-		return service.findAll();
-	}
-
-	@GetMapping("/users/{id}")
-	public EntityModel<User> findUser(@PathVariable Integer id) throws UserNotFoundException {
-		User user =  service.findOne(id);
-		if (user == null )
-			throw new UserNotFoundException("id-"+id);
-		
-		EntityModel<User> model = EntityModel.of(user);
-		WebMvcLinkBuilder linkToUsers = linkTo(methodOn(this.getClass()).findAll());
-		model.add(linkToUsers.withRel("all-users"));
-		return model;
+	@PostMapping("/login")
+	public UserLoginDto login(@RequestParam("username") String username, @RequestParam("password") String pwd) {
+		User user = service.login(username, pwd);
+		String token = Security.getJWTToken(user);
+		user.setToken(token);
+		return ObjectMapperUtils.map(user, UserLoginDto.class);
 	}
 
-	@PostMapping("/users")
-	public ResponseEntity<Object> findUser(@Valid @RequestBody User user) {
-		User userSaved = service.save(user);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(userSaved.getId()).toUri();
-	return 	ResponseEntity.created(location).build();
+	@PostMapping("/register")
+	public User register(@RequestParam("username") String username, @RequestParam("password") String pwd) {
+		User user = new User();
+		user.setUsername(username);
+		user.setPwd(pwd);
+		return service.create(user);
 	}
-	
-	@DeleteMapping("/users/{id}")
-	public void deleteUser(@PathVariable Integer id) throws UserNotFoundException {
-		User user =  service.deleteById(id);
-		if (user == null )
-			throw new UserNotFoundException("id-"+id);
-	}
-	*/
+
 }

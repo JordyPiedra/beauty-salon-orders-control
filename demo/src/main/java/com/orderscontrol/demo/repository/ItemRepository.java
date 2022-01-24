@@ -14,4 +14,6 @@ public interface ItemRepository extends BaseRepository<Item> {
 	@Query(value = "select * from category where parent_category_id is null", nativeQuery = true)
 	Optional<Item> findAllParents();
 	
+	
+	
 }

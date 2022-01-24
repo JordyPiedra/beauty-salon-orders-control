@@ -28,7 +28,7 @@ public class CategoryService extends BaseServiceImp<Category> {
 
 	@Override
 	public List<Category> selectAll() throws NotFoundException {
-		Optional<Category> optional = repository.findAllParents();
+		Optional<List<Category>> optional = repository.findAllParents();
 		return (List<Category>) optional.get();
 	}
 }
