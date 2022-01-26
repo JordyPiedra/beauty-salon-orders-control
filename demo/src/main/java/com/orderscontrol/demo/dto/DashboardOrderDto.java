@@ -15,6 +15,12 @@ public class DashboardOrderDto extends BaseDto {
 
 	private String subtitle;
 
+	private String clientName;
+
+	private String clientPhone;
+
+	private String clientEmail;
+
 	private List<ListDescription> list;
 
 	private int participants;
