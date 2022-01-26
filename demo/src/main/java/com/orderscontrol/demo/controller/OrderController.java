@@ -59,13 +59,17 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 
 	@GetMapping("/dashboard")
 	public List<DashboardOrderDto> findAllDashboard() throws Exception {
-		List<OrderDto> orderDtoList = ObjectMapperUtils.mapAll(service.selectAll(), OrderDto.class);
+		List<OrderDto> orderDtoList = ObjectMapperUtils
+				.mapAll(((OrderRepository) service.getBaseRepository()).findAllByOrderByIdDesc(), OrderDto.class);
 		List<DashboardOrderDto> dashboardOrderList = new ArrayList<DashboardOrderDto>();
 		for (OrderDto orderDto : orderDtoList) {
 			DashboardOrderDto dto = new DashboardOrderDto();
 			dto.setId(orderDto.getId());
 			dto.setTitle(orderDto.getClientName());
 			dto.setStatus(orderDto.getStatus());
+			dto.setClientEmail(orderDto.getClientEmail());
+			dto.setClientPhone(orderDto.getClientPhone());
+			dto.setClientName(orderDto.getClientName());
 			dto.setSubtitle(orderDto.getCreationDate().toString());
 			dto.setPrice(orderDto.getTotal());
 			dto.setServices(orderDto.getOrderDetails().size());
