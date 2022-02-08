@@ -20,6 +20,8 @@ public class OrderDetailDto extends BaseDto {
 	private double price;
 
 	private String[] participants;
+	
+	private boolean compound;
 
 	
 }
