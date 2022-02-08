@@ -111,6 +111,7 @@ public class OrderController extends BaseController<OrderService, OrderDto> {
 			if (detailValue != null) {
 				detail.setKey(detailValue.getKeyData());
 				detail.setItemId(detailValue.getItem().getId());
+				detail.setCompound(detailValue.getItem().isCompound());
 			}
 
 		}
